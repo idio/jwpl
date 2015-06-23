@@ -1051,7 +1051,7 @@ public class ModularParser implements MediaWikiParser,
 					for (String s : tokenize(sm, startSpan.getEnd(), endSpan
 							.getStart(), lineSeparator))
 					{
-						sb.append("[[" + s + "]]" + lineSeparator);
+					        sb.append("[[" + imageIdentifers.get(0) + ":" + s + "]]" + lineSeparator);
 					}
 
 					// replace the source and remove the tags
