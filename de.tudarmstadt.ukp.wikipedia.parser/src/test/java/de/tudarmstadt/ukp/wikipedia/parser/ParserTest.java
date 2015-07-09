@@ -73,7 +73,14 @@ public class ParserTest {
         assert(this.findLinkInList(new Link(testPar, new Span(45, 62), "Dillwyn,_Virginia",  Link.type.INTERNAL, new ArrayList<String>()), testPar.getLinks()));
         assert(this.findLinkInList(new Link(testPar, new Span(312, 338), "Shenandoah_Valley_Railroad_(short-line)",  Link.type.INTERNAL, new ArrayList<String>()), testPar.getLinks()));
         assert(this.findLinkInList(new Link(testPar, new Span(428, 437), "Spiderman",  Link.type.INTERNAL, new ArrayList<String>()), testPar.getLinks()));
-        assert(testPar.getText().substring(45, 62).equals("Dillwyn, Virginia"));
+
+        for (Link l: testPar.getLinks()){
+            int start = l.getPos().getStart();
+            int end = l.getPos().getEnd();
+            if(start!=end){
+                assert(testPar.getText().substring(start, end).equals(l.getText()));
+            }
+        }
         assert(testPar.getText().contains("a GP16, getting a new coat of paint at "));
 
     }
