@@ -1048,10 +1048,20 @@ public class ModularParser implements MediaWikiParser,
 					}
 
 					// images
-					for (String s : tokenize(sm, startSpan.getEnd(), endSpan
+					for (String imageParagraph : tokenize(sm, startSpan.getEnd(), endSpan
 							.getStart(), lineSeparator))
 					{
-					        sb.append("[[" + imageIdentifers.get(0) + ":" + s + "]]" + lineSeparator);
+                          String[] splitImageParagraph = imageParagraph.split("\\|");
+                          String imageLink = "";
+                          if(splitImageParagraph.length == 1){
+                              imageParagraph = "";
+                              imageLink = splitImageParagraph[0];
+                          } else{
+                              imageParagraph = imageParagraph.replace(splitImageParagraph[0] + "|", "");
+                              imageLink = splitImageParagraph[0];
+                          }
+
+                          sb.append("[[" + imageIdentifers.get(0) + ":"+imageLink +"]]" + imageParagraph + lineSeparator);
 					}
 
 					// replace the source and remove the tags

@@ -36,4 +36,42 @@ public class ParserTest {
 
 
     }
+
+
+    @Test
+    public void testExtractingLinksFromGallery(){
+
+        String text = "==History==\n" +
+                "<gallery>\n" +
+                "Image:Buckingham Branch Railroad GP16 rebuild.JPG|BB 2, a [[GP16]], getting a new coat of paint at [[Dillwyn, Virginia]].\n" +
+                "Image:BBRR4 Dillwyn WJGrimes.JPG|BBRR 4, an [[RS-4-TC]], with a new coat of paint at [[Dillwyn, Virginia]].\n" +
+                "Image:BB7 Louisa WJGrimes.JPG|BB 7, a [[GP40]], heading east at [[Louisa, Virginia]].\n" +
+                "Image:BBRR8 Doswell WJGrimes.JPG|BB 8, a GP16 in GRIV paint at [[Doswell, Virginia]].\n" +
+                "Image:Bb 13 augusta co-op.jpg|BB 13 switches Augusta CO-OP in [[Staunton, Virginia]].\n" +
+                "Image:Bb_7_svrr_staunton,_va_08292010.jpg|BB 7 with sisters, south on the [[Shenandoah Valley Railroad (short-line)|Shenandoah Valley Railroad]] in [[Staunton, Virginia]]. Having just made a pick up of Empty Cars to take West.\n" +
+                "Image:image_with_no_par.jpg\n" +
+                "</gallery>";
+
+        MediaWikiParserFactory pf = new MediaWikiParserFactory(WikiConstants.Language.english);
+        MediaWikiParser parser = pf.createParser();
+
+        ParsedPage pp = parser.parse(text);
+
+        for (Section s : pp.getSections()){
+            for (Paragraph p: s.getParagraphs()){
+                System.out.println(p.getText());
+                for (Link link : p.getLinks()) {
+                    System.out.println("\t"+link.getPos().getStart());
+                    System.out.println("\t"+link.getPos().getEnd());
+                    System.out.println("\t"+link.getText());
+                    if (link.getPos().getStart()!=link.getPos().getEnd())
+                     System.out.println("\t"+link.getText().substring(link.getPos().getStart(),link.getPos().getEnd())) ;
+                }
+            }
+        }
+
+
+
+
+    }
 }
