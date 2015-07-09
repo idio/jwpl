@@ -5,6 +5,9 @@ import de.tudarmstadt.ukp.wikipedia.parser.mediawiki.MediaWikiParser;
 import de.tudarmstadt.ukp.wikipedia.parser.mediawiki.MediaWikiParserFactory;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * Created by dav009 on 23/06/2015.
  */
@@ -37,6 +40,13 @@ public class ParserTest {
 
     }
 
+    public boolean findLinkInList(Link l, Collection<Link> list){
+         for(Link currentLink:list){
+             if (l.equals(currentLink)) return true;
+         }
+        return false;
+    }
+
 
     @Test
     public void testExtractingLinksFromGallery(){
@@ -50,28 +60,21 @@ public class ParserTest {
                 "Image:Bb 13 augusta co-op.jpg|BB 13 switches Augusta CO-OP in [[Staunton, Virginia]].\n" +
                 "Image:Bb_7_svrr_staunton,_va_08292010.jpg|BB 7 with sisters, south on the [[Shenandoah Valley Railroad (short-line)|Shenandoah Valley Railroad]] in [[Staunton, Virginia]]. Having just made a pick up of Empty Cars to take West.\n" +
                 "Image:image_with_no_par.jpg\n" +
+                "Image:image_with_par.jpg|Something [[Spiderman]]\n" +
                 "</gallery>";
 
         MediaWikiParserFactory pf = new MediaWikiParserFactory(WikiConstants.Language.english);
         MediaWikiParser parser = pf.createParser();
-
         ParsedPage pp = parser.parse(text);
+        Paragraph testPar;
+        testPar = pp.getSections().get(0).getParagraphs().get(0);
 
-        for (Section s : pp.getSections()){
-            for (Paragraph p: s.getParagraphs()){
-                System.out.println(p.getText());
-                for (Link link : p.getLinks()) {
-                    System.out.println("\t"+link.getPos().getStart());
-                    System.out.println("\t"+link.getPos().getEnd());
-                    System.out.println("\t"+link.getText());
-                    if (link.getPos().getStart()!=link.getPos().getEnd())
-                     System.out.println("\t"+link.getText().substring(link.getPos().getStart(),link.getPos().getEnd())) ;
-                }
-            }
-        }
-
-
-
+        assert(this.findLinkInList(new Link(testPar, new Span(8, 12), "GP16",  Link.type.INTERNAL, new ArrayList<String>()), testPar.getLinks()));
+        assert(this.findLinkInList(new Link(testPar, new Span(45, 62), "Dillwyn,_Virginia",  Link.type.INTERNAL, new ArrayList<String>()), testPar.getLinks()));
+        assert(this.findLinkInList(new Link(testPar, new Span(312, 338), "Shenandoah_Valley_Railroad_(short-line)",  Link.type.INTERNAL, new ArrayList<String>()), testPar.getLinks()));
+        assert(this.findLinkInList(new Link(testPar, new Span(428, 437), "Spiderman",  Link.type.INTERNAL, new ArrayList<String>()), testPar.getLinks()));
+        assert(testPar.getText().substring(45, 62).equals("Dillwyn, Virginia"));
+        assert(testPar.getText().contains("a GP16, getting a new coat of paint at "));
 
     }
 }
