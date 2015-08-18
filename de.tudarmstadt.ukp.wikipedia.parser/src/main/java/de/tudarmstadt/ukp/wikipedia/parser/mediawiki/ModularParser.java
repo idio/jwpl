@@ -43,7 +43,9 @@ public class ModularParser implements MediaWikiParser,
 			"user_profile_talk", "page", "page_talk", "index", "index_talk",
 			"widget", "widget_talk", "jSApplet", "jSApplet_talk", "poll", "poll_talk",
 			"imageAnnotation", "layer", "layer_talk", "quiz", "quiz_talk", "translations",
-			"translations_talk", "module", "module_talk", "imageidentifers"};
+			"translations_talk", "module", "module_talk", "imageidentifers", "wikipedia",
+	        "meta", "additional", "portal", "project", "userbox", "userbox_talk", "interpretation",
+	        "interpretation_talk"};
 
 	Set<String> allNamespaces = new HashSet<String>(java.util.Arrays.asList(namespaces));
 
