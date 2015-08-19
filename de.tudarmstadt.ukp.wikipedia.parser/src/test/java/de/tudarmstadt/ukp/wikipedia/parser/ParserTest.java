@@ -147,15 +147,15 @@ public class ParserTest {
 
         ParsedPage pp = parser.parse(text);
 
-		List<String> uris = getUrisInParagraphs(pp);
-		assertThat(uris, hasItems("H2O:_Footprints_in_the_Sand", "Noriko_Hayami"));
+        List<String> uris = getUrisInParagraphs(pp);
+        assertThat(uris, hasItems("H2O:_Footprints_in_the_Sand", "Noriko_Hayami"));
 
-		// Making sure Links with ":" are considered Internals
-		Link h2OAnnotation = getLink(pp, "H2O:_Footprints_in_the_Sand");
-		assertEquals(h2OAnnotation.getType(), Link.type.INTERNAL);
-		assertEquals(getLink(pp, "Cite:AAA").getType(), Link.type.UNKNOWN);
+        // Making sure Links with ":" are considered Internals
+        Link h2OAnnotation = getLink(pp, "H2O:_Footprints_in_the_Sand");
+        assertEquals(h2OAnnotation.getType(), Link.type.INTERNAL);
+        assertEquals(getLink(pp, "Cite:AAA").getType(), Link.type.UNKNOWN);
 
-		testAnchorsInText(pp);
+        testAnchorsInText(pp);
     }
 
 

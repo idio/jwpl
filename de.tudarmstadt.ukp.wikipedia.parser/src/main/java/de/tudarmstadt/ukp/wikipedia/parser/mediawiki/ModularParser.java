@@ -1623,9 +1623,12 @@ public class ModularParser implements MediaWikiParser,
 				}
 				else
 				{
-					if (allNamespaces.contains(namespace.toLowerCase())) {
+					if (allNamespaces.contains(namespace.toLowerCase()))
+					{
 						linkType = Link.type.UNKNOWN;
-					}else{
+					}
+					else
+					{
 						linkType = Link.type.INTERNAL;
 					}
 					parameters = null;
