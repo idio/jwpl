@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,6 +36,23 @@ import de.tudarmstadt.ukp.wikipedia.parser.Content.FormatType;
 public class ModularParser implements MediaWikiParser,
 		MediaWikiContentElementParser
 {
+
+	//Link has namespace but is not image
+	String[] namespaces = {"image", "talk", "user", "project", "file", "project_talk", "mediaWiki",
+			"mediaWiki_talk", "template", "template_talk", "help", "help_talk",
+			"category", "category_talk", "thread", "thread_talk", "summary",
+			"summary_talk", "relation", "relation_talk", "property",
+			"property_talk", "type", "type_talk", "form", "form_talk", "concept",
+			"concept_talk", "forum", "forum_talk", "cite", "cite_talk", "relation",
+			"media", "special", "userwiki", "userwiki_talk", "user_profile",
+			"user_profile_talk", "page", "page_talk", "index", "index_talk",
+			"widget", "widget_talk", "jsapplet", "jsapplet_talk", "poll", "poll_talk",
+			"imageannotation", "layer", "layer_talk", "quiz", "quiz_talk", "translations",
+			"translations_talk", "module", "module_talk", "imageidentifers", "wikipedia",
+	        "meta", "additional", "portal", "project", "userbox", "userbox_talk", "interpretation",
+	        "interpretation_talk"};
+
+	Set<String> allNamespaces = new HashSet<String>(java.util.Arrays.asList(namespaces));
 
 	private final Log logger = LogFactory.getLog(getClass());
 
@@ -1604,8 +1623,14 @@ public class ModularParser implements MediaWikiParser,
 				}
 				else
 				{
-					//Link has namespace but is not image
-					linkType = Link.type.UNKNOWN;
+					if (allNamespaces.contains(namespace.toLowerCase()))
+					{
+						linkType = Link.type.UNKNOWN;
+					}
+					else
+					{
+						linkType = Link.type.INTERNAL;
+					}
 					parameters = null;
 				}
 			}
